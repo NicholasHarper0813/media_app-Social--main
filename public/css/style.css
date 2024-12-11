@@ -1,0 +1,66 @@
+#homepage{
+    text-align: center;
+}
+.btn-facebook{
+    background-color: #4aa1f3;
+    border-radius: 0%;
+    color: #fff;
+    width: auto;
+}
+.btn-facebook:link, 
+.btn-facebook:visited{
+    text-decoration: none;
+    background-color: #4aa1f3;
+    color: #fff;
+}
+.btn-gplus{
+    background-color: #e44b34;
+    color: #fff;
+    border-radius: 0%;
+    width: auto;
+}
+.btn-gplus:link, 
+.btn-gplus:visited{
+    text-decoration: none;
+    background-color: #e44b34;
+    color: #fff;
+}
+#welcome{
+    color: #4aa1f3;
+}
+h1{
+    text-align: center;
+}
+#main{
+    margin-top: 60px;
+    margin-bottom: 50px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 18px;
+}
+.col-sm-4{
+    margin-bottom: 10px;
+}
+#address {
+    color: green;
+}
+.post-user-pic {
+    width: 100px;
+    height: auto;
+}
+.red{
+    color: red;
+}
+#comment-user-picture{
+    width: 65px;
+    height: auto;
+}
+#users-image{
+    width: 100px;
+    height: auto;
+}
+#users-box{
+    margin: 5px 5px 5px 5px;
+}
+.row{
+    width: 100%;
+}

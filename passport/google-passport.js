@@ -1,5 +1,5 @@
-const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const passport = require('passport');
 const User = require('../models/user');
 const keys = require('../config/keys');
 
@@ -24,10 +24,12 @@ passport.use(new GoogleStrategy({
     User.findOne({
         google: profile.id
     }).then((user) => {
-        if(user){
+        if(user)
+        {
             done(null, user);
         }
-        else{
+        else
+        {
             const newUser = {
                 google: profile.id,
                 fullname: profile.displayName,
@@ -36,7 +38,7 @@ passport.use(new GoogleStrategy({
                 email: profile.emails[0].value,
                 image: profile.photos[0].value
             }
-            // Save new user to database.
+            
             new User(newUser).save()
             .then((user) => {
                 done(null, user);

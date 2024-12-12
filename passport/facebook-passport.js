@@ -2,9 +2,10 @@ const passport = require('passport');
 const keys = require('../config/keys');
 const User = require('../models/user');
 const FacebookStrategy = require('passport-facebook').Strategy;
+
 passport.serializeUser(function(user, done) {
     done(null, user.id);
-  });
+});
   
 passport.deserializeUser(function(id, done) {
     User.findById(id, function(err, user) {
@@ -23,9 +24,12 @@ passport.use(new FacebookStrategy({
     console.log(profile);
     User.findOne({facebook: profile.id})
     .then((user) => {
-        if(user){
+        if(user)
+        {
             done(null, user);
-        }else{
+        }
+        else
+        {
             const newUser = {
                 facebook: profile.id,
                 fullname: profile.displayName,

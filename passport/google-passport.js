@@ -1,11 +1,11 @@
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const passport = require('passport');
 const User = require('../models/user');
 const keys = require('../config/keys');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 passport.serializeUser(function(user, done) {
     done(null, user.id);
-  });
+});
   
 passport.deserializeUser(function(id, done) {
     User.findById(id, function(err, user) {
@@ -30,11 +30,12 @@ passport.use(new GoogleStrategy({
         }
         else
         {
-            const newUser = {
+            const newUser = 
+            {
                 google: profile.id,
-                fullname: profile.displayName,
-                lastname: profile.name.familyName,
                 firstname: profile.name.givenName,
+                lastname: profile.name.familyName,
+                fullname: profile.displayName,
                 email: profile.emails[0].value,
                 image: profile.photos[0].value
             }

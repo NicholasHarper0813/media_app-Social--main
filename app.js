@@ -1,21 +1,23 @@
+const express = require('express');
+const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const cookieParser = require('cookie-parser');
 const exphbs = require('express-handlebars');
 const session = require("express-session");
 const bodyParser = require("body-parser");
-const Handlebars = require('handlebars');
-const mongoose = require('mongoose');
 const passport = require('passport');
-const express = require('express');
+const Handlebars = require('handlebars');
 const keys = require('./config/keys.js');
 const User = require('./models/user.js');
 const Post = require('./models/post');
+
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
 
 require('./passport/google-passport');
 require('./passport/facebook-passport');
 
-const {
+const 
+{
     ensureAuthentication,
     ensureGuest
 } = require('./helpers/auth');
@@ -62,20 +64,16 @@ mongoose.connect(keys.MongoURI, {
 });
 
 const port = process.env.PORT || 3000;
-
 app.get('/', ensureGuest, (req, res) => {
     res.render('home');
 });
-
 app.get('/about', (req, res) => {
     res.render('about');
 });
-
 app.get('/auth/google',
   passport.authenticate('google', { 
     scope: ['profile', 'email'] 
 }));
-
 app.get('/auth/google/callback', 
   passport.authenticate('google', { 
     failureRedirect: '/login'
@@ -83,12 +81,10 @@ app.get('/auth/google/callback',
   (req, res) => {
     res.redirect('/profile');
   });
-
 app.get('/auth/facebook',
   passport.authenticate('facebook',{
       scope: 'email'
   }));
-
 app.get('/auth/facebook/callback',
   passport.authenticate('facebook', { 
       failureRedirect: '/' 
@@ -96,7 +92,6 @@ app.get('/auth/facebook/callback',
   (req, res) => {
     res.redirect('/profile');
   });
-
 app.get('/profile', ensureAuthentication, (req, res) => {
     Post.find({user: req.user._id})
     .populate('user')
@@ -107,7 +102,6 @@ app.get('/profile', ensureAuthentication, (req, res) => {
         });
     }); 
 });
-
 app.get('/users', ensureAuthentication, (req, res) => {
     User.find({}).then((users) =>{
         res.render('users', {
@@ -115,7 +109,6 @@ app.get('/users', ensureAuthentication, (req, res) => {
         });
     });
 });
-
 app.get('/user/:id', ensureAuthentication, (req, res) => {
     User.findById({_id: req.params.id})
     .then((user) => {
@@ -124,7 +117,6 @@ app.get('/user/:id', ensureAuthentication, (req, res) => {
         });
     });
 });
-
 app.post('/addEmail', ensureAuthentication, (req, res) => {
     const email = req.body.email;
     User.findById({_id: req.user._id})
@@ -136,7 +128,6 @@ app.post('/addEmail', ensureAuthentication, (req, res) => {
         })
     })
 })
-
 app.post('/addPhone', ensureAuthentication, (req, res) => {
     const phone = req.body.phone;
     User.findById({_id: req.user._id})
@@ -148,7 +139,6 @@ app.post('/addPhone', ensureAuthentication, (req, res) => {
         })
     });
 });
-
 app.post('/addLocation', ensureAuthentication, (req, res) => {
     const location = req.body.location;
     User.findById({_id: req.user._id})
@@ -160,11 +150,9 @@ app.post('/addLocation', ensureAuthentication, (req, res) => {
         })
     });
 });
-
 app.get('/addPost', ensureAuthentication, (req, res) => {
     res.render('addPost');
 });
-
 app.post('/savePost', ensureAuthentication, (req, res) => {
     var allowComments;
     if(req.body.allowComments)
@@ -187,7 +175,6 @@ app.post('/savePost', ensureAuthentication, (req, res) => {
         res.redirect('/posts');
     });
 });
-
 app.get('/editPost/:id', ensureAuthentication, (req, res) => {
     Post.findOne({_id: req.params.id})
     .then((post) => {
@@ -196,7 +183,6 @@ app.get('/editPost/:id', ensureAuthentication, (req, res) => {
         });
     });
 });
-
 app.put('/editingPost/:id', ensureAuthentication, (req, res) => {
     Post.findOne({_id: req.params.id})
     .then((post) => {
@@ -216,14 +202,16 @@ app.put('/editingPost/:id', ensureAuthentication, (req, res) => {
         });
     });
 });
-
+app.get('/logout', (req, res) => {
+    req.logOut();
+    res.redirect('/');
+});
 app.delete('/:id', ensureAuthentication, (req, res) => {
     Post.remove({_id: req.params.id})
     .then(() => {
         res.redirect('profile');
     })
 })
-
 app.get('/posts', ensureAuthentication, (req, res) => {
     Post.find({status: 'public'})
     .populate('user')
@@ -246,7 +234,6 @@ app.get('/showposts/:id', ensureAuthentication, (req, res) => {
         });
     });
 });
-
 app.post('/addComment/:id', ensureAuthentication, (req, res) => {
     Post.findOne({_id: req.params.id})
     .then((post) => {
@@ -261,12 +248,6 @@ app.post('/addComment/:id', ensureAuthentication, (req, res) => {
         })
     });
 });
-
-app.get('/logout', (req, res) => {
-    req.logOut();
-    res.redirect('/');
-});
-
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });

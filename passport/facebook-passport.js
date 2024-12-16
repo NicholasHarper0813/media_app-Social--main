@@ -32,9 +32,9 @@ passport.use(new FacebookStrategy({
         {
             const newUser = {
                 facebook: profile.id,
-                fullname: profile.displayName,
                 firstname: profile.name.givenName,
                 lastname: profile.name.familyName,
+                fullname: profile.displayName,
                 email: profile.emails[0].value,
                 image: `https://graph.facebook.com/${profile.id}/picture?type=large`
             }
